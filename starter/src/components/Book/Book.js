@@ -3,7 +3,7 @@ import { update } from "../../BooksAPI";
 import { ShelfContext } from "../ContextProvider";
 
 const Book = (props) => {
-  const { id, shelf, thumbnail, title, author, changeShelf } = props;
+  const { id, shelf, thumbnail, title, author } = props;
 
   const [selected, setSelected] = useState(shelf);
 

@@ -2,7 +2,7 @@ import React from "react";
 import Book from "../Book/Book";
 
 const BookShelf = (props) => {
-  const { shelf, books, updateShelf } = props;
+  const { shelf, books } = props;
 
   return (
     <>
@@ -18,7 +18,6 @@ const BookShelf = (props) => {
                 title={book.title}
                 author={book.authors.reduce((acc, value) => acc + ", " + value)}
                 thumbnail={book.imageLinks.thumbnail}
-                changeShelf={updateShelf}
               />
             ))}
           </ol>

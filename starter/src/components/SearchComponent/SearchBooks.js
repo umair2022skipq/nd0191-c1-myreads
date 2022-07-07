@@ -26,10 +26,8 @@ const SearchBooks = () => {
   return (
     <div className="search-books">
       <div className="search-books-bar">
-        <Link to="/">
-          <a href="#" className="close-search">
-            Close
-          </a>
+        <Link to="/" className="close-search">
+          Close
         </Link>
 
         <div className="search-books-input-wrapper">
@@ -43,20 +41,22 @@ const SearchBooks = () => {
       {input && (
         <div className="search-books-results">
           <ol className="books-grid">
-            {books.map((book) => {
-              return (
-                <Book
-                  key={book.id}
-                  id={book.id}
-                  shelf={book.shelf}
-                  title={book.title}
-                  author={book.authors.reduce(
-                    (acc, value) => acc + ", " + value
-                  )}
-                  thumbnail={book.imageLinks.thumbnail}
-                />
-              );
-            })}
+            {books
+              .filter((book) => book.authors !== undefined)
+              .map((book) => {
+                return (
+                  <Book
+                    key={book.id}
+                    id={book.id}
+                    shelf="none"
+                    title={book.title}
+                    author={book.authors.reduce(
+                      (acc, value) => acc + ", " + value
+                    )}
+                    thumbnail={book.imageLinks.thumbnail}
+                  />
+                );
+              })}
           </ol>
         </div>
       )}
