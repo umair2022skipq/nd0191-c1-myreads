@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { update } from "../../BooksAPI";
+import { ShelfContext } from "../ContextProvider";
 
 const Book = (props) => {
   const { id, shelf, thumbnail, title, author, changeShelf } = props;
 
   const [selected, setSelected] = useState(shelf);
 
+  const { setChangeShelf } = useContext(ShelfContext);
+
   const changeHandler = async (event) => {
     setSelected(event.target.value);
     await update({ id: id }, event.target.value);
-    changeShelf(event.target.value);
+    setChangeShelf(event.target.value);
   };
 
   return (

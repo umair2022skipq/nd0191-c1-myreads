@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Book from "../Book/Book";
 import "../../App.css";
 import { search } from "../../BooksAPI";
+import { Link } from "react-router-dom";
 
-const SearchBooks = ({ onClick }) => {
+const SearchBooks = () => {
   const [input, setInput] = useState("");
   const [books, setBooks] = useState([]);
   const [error, setError] = useState("");
@@ -25,9 +26,12 @@ const SearchBooks = ({ onClick }) => {
   return (
     <div className="search-books">
       <div className="search-books-bar">
-        <a href="#" className="close-search" onClick={onClick}>
-          Close
-        </a>
+        <Link to="/">
+          <a href="#" className="close-search">
+            Close
+          </a>
+        </Link>
+
         <div className="search-books-input-wrapper">
           <input
             type="text"

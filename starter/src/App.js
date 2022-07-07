@@ -1,11 +1,19 @@
 import "./App.css";
 import Main from "./components/Main";
+import SearchBooks from "./components/SearchComponent/SearchBooks";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ContextProvider from "./components/ContextProvider";
 
 function App() {
   return (
-    <div className="app">
-      <Main />
-    </div>
+    <ContextProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Main />}></Route>
+          <Route path="/search" element={<SearchBooks />}></Route>
+        </Routes>
+      </Router>
+    </ContextProvider>
   );
 }
 
