@@ -9,7 +9,6 @@ const SearchBooks = () => {
   const [books, setBooks] = useState([]);
   const [error, setError] = useState("");
   const [shelvedBooks, setShelvedBooks] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     (async function () {
@@ -22,16 +21,16 @@ const SearchBooks = () => {
     setInput(event.target.value);
 
     if (event.target.value !== "") {
-      setIsLoading(true);
       const response = await search(event.target.value);
 
-      if (!response.error) {
+      if (response.error === undefined) {
+        setError("");
         setBooks(response);
       } else {
         setError(response.error);
       }
-
-      setIsLoading(false);
+    } else {
+      setError("");
     }
   };
 
@@ -71,7 +70,13 @@ const SearchBooks = () => {
         </div>
       </div>
 
-      {input && !isLoading && (
+      {input && error && (
+        <p style={{ marginTop: "70px", textAlign: "center" }}>
+          Could not find books
+        </p>
+      )}
+
+      {input && !error && (
         <div className="search-books-results">
           <ol className="books-grid">
             {updatedBooks.map((book) => {
