@@ -4,14 +4,7 @@ import { getAll } from "../BooksAPI";
 import BookShelf from "./BookShelf/BookShelf";
 import { Link } from "react-router-dom";
 import { ShelfContext } from "./ContextProvider";
-
-function LoadingSpinner() {
-  return (
-    <div className="spinner-container">
-      <div className="loading-spinner"></div>
-    </div>
-  );
-}
+import LoadingSpinner from "./LoadingSpinner/LoadingSpinner";
 
 const Main = () => {
   const [books, setBooks] = useState([]);

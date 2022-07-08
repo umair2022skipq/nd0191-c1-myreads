@@ -1,27 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Book from "../Book/Book";
 import "../../App.css";
-import { search } from "../../BooksAPI";
+import { search, getAll } from "../../BooksAPI";
 import { Link } from "react-router-dom";
 
 const SearchBooks = () => {
   const [input, setInput] = useState("");
   const [books, setBooks] = useState([]);
   const [error, setError] = useState("");
+  const [shelvedBooks, setShelvedBooks] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    (async function () {
+      const response = await getAll();
+      setShelvedBooks(response);
+    })();
+  }, []);
 
   const changeHandler = async (event) => {
     setInput(event.target.value);
 
-    try {
+    if (event.target.value !== "") {
+      setIsLoading(true);
       const response = await search(event.target.value);
 
       if (!response.error) {
         setBooks(response);
+      } else {
+        setError(response.error);
       }
-    } catch (error) {
-      setError(error.message);
+
+      setIsLoading(false);
     }
   };
+
+  const filteredbooks = books
+    .filter((book) => Boolean(book.authors))
+    .filter((book) => Boolean(book.imageLinks));
+
+  const shelvedBooksIds = shelvedBooks.map((book) => book.id);
+
+  const updatedBooks = filteredbooks.map((book) => {
+    if (shelvedBooksIds.includes(book.id)) {
+      const currentShelf = shelvedBooks.find(
+        (shelvedBook) => shelvedBook.id === book.id
+      ).shelf;
+      return {
+        ...book,
+        shelf: currentShelf,
+      };
+    }
+
+    return book;
+  });
 
   return (
     <div className="search-books">
@@ -38,25 +70,24 @@ const SearchBooks = () => {
           />
         </div>
       </div>
-      {input && (
+
+      {input && !isLoading && (
         <div className="search-books-results">
           <ol className="books-grid">
-            {books
-              .filter((book) => book.authors !== undefined)
-              .map((book) => {
-                return (
-                  <Book
-                    key={book.id}
-                    id={book.id}
-                    shelf="none"
-                    title={book.title}
-                    author={book.authors.reduce(
-                      (acc, value) => acc + ", " + value
-                    )}
-                    thumbnail={book.imageLinks.thumbnail}
-                  />
-                );
-              })}
+            {updatedBooks.map((book) => {
+              return (
+                <Book
+                  key={book.id}
+                  id={book.id}
+                  shelf={book.shelf ? book.shelf : "none"}
+                  title={book.title}
+                  author={book.authors.reduce(
+                    (acc, value) => acc + ", " + value
+                  )}
+                  thumbnail={book.imageLinks.thumbnail}
+                />
+              );
+            })}
           </ol>
         </div>
       )}
