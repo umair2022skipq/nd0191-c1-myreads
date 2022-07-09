@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { update } from "../../BooksAPI";
 import { ShelfContext } from "../ContextProvider";
+import PropTypes from "prop-types";
 
 const Book = (props) => {
   const { id, shelf, thumbnail, title, author } = props;
@@ -29,9 +30,7 @@ const Book = (props) => {
           ></div>
           <div className="book-shelf-changer">
             <select value={selected} onChange={changeHandler}>
-              <option value="none" disabled>
-                Move to...
-              </option>
+              <option disabled>Move to...</option>
               <option value="currentlyReading">Currently Reading</option>
               <option value="wantToRead">Want to Read</option>
               <option value="read">Read</option>
@@ -47,3 +46,11 @@ const Book = (props) => {
 };
 
 export default Book;
+
+Book.proptype = {
+  id: PropTypes.string.isRequired,
+  shelf: PropTypes.string.isRequired,
+  thumbnail: PropTypes.string,
+  title: PropTypes.string,
+  author: PropTypes.string,
+};

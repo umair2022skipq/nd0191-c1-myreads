@@ -3,6 +3,7 @@ import Book from "../Book/Book";
 import "../../App.css";
 import { search, getAll } from "../../BooksAPI";
 import { Link } from "react-router-dom";
+import { debounce } from "lodash";
 
 const SearchBooks = () => {
   const [input, setInput] = useState("");
@@ -17,7 +18,7 @@ const SearchBooks = () => {
     })();
   }, []);
 
-  const changeHandler = async (event) => {
+  const changeHandler = debounce(async (event) => {
     setInput(event.target.value);
 
     if (event.target.value !== "") {
@@ -32,7 +33,7 @@ const SearchBooks = () => {
     } else {
       setError("");
     }
-  };
+  }, 1000);
 
   const filteredbooks = books
     .filter((book) => Boolean(book.authors))
@@ -50,7 +51,6 @@ const SearchBooks = () => {
         shelf: currentShelf,
       };
     }
-
     return book;
   });
 
